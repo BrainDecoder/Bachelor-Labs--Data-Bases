@@ -1,0 +1,85 @@
+--Learning samples
+
+SELECT Name, Salary, (Salary/12) --adds calculated column
+FROM Worker;
+
+SELECT Name, ' has ', Salary, ' montly payment.' --adds comments 
+
+SELECT DISTINCT Name -- removes duplicates, if several columns it removes all identical tuples
+
+SELECT * 
+FROM Worker
+where Name = 'John Travolta'; --can be also <, >, <=, >=, <> for numbers and letters
+-- M and m are not the same
+where Salary BETWEEN 5000 AND 7000;
+where Name BETWEEN 'A' AND 'D';
+
+SELECT *
+FROM Worker
+where Name IN ('Alex', 'Mary'); --selects only the lines with specific values in Name column
+
+WHERE Name LIKE 'M_ry'; -- when not sure about the second letter
+WHERE Name LIKE '%ry'; -- when not sure about the first letters, can be from 0 to many
+WHERE Name LIKE '$_blabla$%hoho' ESCAPE '$'; --treats _ and % as characters, not wild cards, and results in _blabla%hoho
+
+WHERE Salary IS NULL; --finds the null cells
+WHERE Salary = 2000 AND (Name = 'Alex' OR Name = 'Mary') AND NOT Position = 'Director'; -- complex search possibilities
+
+ORDER by Name;
+ORDER BY Name DESC;
+ORDER BY 3; --order by 3rd column
+
+SELECT COUNT(Name) --doesn't count the NULLs
+FROM Worker;
+SELECT COUNT(DISTINCT Name) --count the different values
+SELECT COUNT(*) --counts the rows number with NULLs
+
+SELECT SUM(Salary), SUM(Salary*1.1)
+FROM Worker;
+
+SELECT Gender, AVG(Height) 
+from People
+Group by Gender; --will give average height for M and W
+
+SELECT Gender, AVG(Height)
+FROM People
+Group by Gender 
+HAVING AVG(Height) > 170; --aggregations cannot be used with WHERE, therefore we need HAVING
+
+SELECT t.column1, tt.column3
+from table1 t, table2 tt --aliases 
+where t.column5 = tt.column5; --equijoin
+
+from table1 S, table1 F --to make an self-join
+
+select * from table1 where column1 = -- takes the value from another search; 
+-- <,>,... can be used instead of =
+-- IN or NOT IN can be used instead of = to take several values 
+(select column1 from table2 where column3 = 'Xxx'); --should return only one result
+
+select * from table1 where EXISTS -- EXISTS returns true/false if values found or not in the subquery 
+(select * from table1 where col1 <= 50); 
+
+... where col1 > ANY (SELECT ...) --ANY or ALL 
+
+SELECT col1 FROM tab1 
+UNION					-- combines the tuples, removes duplicates, 
+SELECT col1 FROM tab2
+ORDER BY ...; --should be outside both SELECT
+
+
+CREATE VIEW view_name --view of columns
+AS Select col1, col2
+FROM tab1;
+
+CREATE VIEW view_name  --view of rows
+AS select col1, col2, col3
+FROM tab1
+WHERE col_year = 1
+WITH CHECK OPTION; --will test each INSERT or UPDATE and reject the lines which are in conflict with the view WHERE
+
+UPDATE view_name  --view update
+SET col1 = 9 
+WHERE col2 = 5;
+
+DROP VIEW view_name;
