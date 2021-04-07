@@ -1,0 +1,164 @@
+CREATE TABLE Specialty(
+SpecialtyNumber varchar NOT NULL PRIMARY KEY,
+SpecialtyName char (20) NOT NULL
+);
+
+CREATE TABLE Doctor(
+DoctorID varchar NOT NULL PRIMARY KEY,
+Name char (40) NOT NULL,
+Phone char(8) NOT NULL,
+SpecialtyNumber varchar NOT NULL,
+Supervisor varchar NOT NULL,
+foreign key (SpecialtyNumber) references Specialty
+);
+
+CREATE TABLE Patient(
+PatientID varchar NOT NULL PRIMARY KEY,
+DoctorID varchar NOT NULL,
+Name char (40) NOT NULL,
+Phone char(8) NOT NULL,
+Email char (15) NOT NULL,
+Adress char (30) NOT NULL,
+AddedDate date NOT NULL,
+foreign key (DoctorID) references Doctor
+);
+
+CREATE TABLE Appointment(
+AppointmentID varchar NOT NULL PRIMARY KEY,
+PatientID varchar NOT NULL,
+DoctorID varchar NOT NULL,
+AppointmentDate date NOT NULL,
+BloodPressure integer (3) NOT NULL,
+Weight integer (3) NOT NULL,
+TreatmentNotes varchar NOT NULL,
+foreign key (PatientID) references Patient,
+foreign key (DoctorID) references Doctor
+);
+
+CREATE TABLE Allergy(
+AllergyID varchar NOT NULL PRIMARY KEY,
+AllergyName char (15) NOT NULL
+);
+
+CREATE TABLE PatientAllergy(
+AllergyID varchar NOT NULL,
+PatientID varchar NOT NULL,
+foreign key (AllergyID) references Allergy,
+foreign key (PatientID) references Patient
+);
+
+CREATE TABLE Medicine(
+MedicineID varchar NOT NULL PRIMARY KEY,
+MedicineName char (15) NOT NULL
+);
+
+CREATE TABLE PatientMedicine(
+AppointmentID varchar NOT NULL,
+MedicineID varchar NOT NULL,
+foreign key (AppointmentID) references Appointment,
+foreign key (MedicineID) references Medicine
+);
+
+INSERT into Specialty values 
+('S1','Dermatology'),
+('S2','Psychiatry'),
+('S3','Oncology'),
+('S4','Cardiology'),
+('S5','Urology'),
+('S6','Pediatrics');
+
+SELECT * FROM Specialty;
+
+INSERT into Doctor values 
+('D1','Doctor Karen','555-1212','S6',''),
+('D2','Doctor John',' 555-2934 ','S2','D1'),
+('D3','Doctor Robert','555-6723','S6','D1'),
+('D4','Doctor David','555-1745','S4','D1'),
+('D5','Doctor Mary','555-6565','S5','D1'),
+('D6','Doctor Linda','555-4889','S1','D1'),
+('D7','Doctor Susan','555-4581','S3','D1'),
+('D8',' Doctor Zeynep ','555-7891','S4','D1'),
+('D9','Doctor Mat','555-7791','S1','D1');
+
+SELECT * FROM Doctor;
+
+INSERT into Patient values 
+('P1','D2','Patient Dana','444-1212','P1@email.com','123 Home St.','02-Jan-19'),
+('P2','D7','Patient Harry','444-2934','P2@email.com','3435 Main St.','13-Jul-11'),
+('P3','D6','Patient Karl','444-6723','P3@email.com','2176 Baker St.','05-Oct-09'),
+('P4','D2','Patient Sid','444-1745','P4@email.com','176 Right St.','20-Jun-10'),
+('P5','D8','Patient Marry','444-6565','P5@email.com','435 Main St.','18-May-14'),
+('P6','D6','Patient Kim','444-4889','P6@email.com','34 Home St.','15-Mar-18'),
+('P7','D4','Patient Susan','444-4581','P7@email.com','65 Water St.','09-Jul-11'),
+('P8','D3','Patient Sam','444-7891','P8@email.com','23 Hill Drive','23-Nov-10'),
+('P9','D5','Patient Peter','444-7791','P9@email.com','12 River St.','02-Jan-08'),
+('P10','D7','Patient Nick','123-1212','P10@email.com','335 Bay St.','13-Jul-11'),
+('P11','D9','Patient Kyle','123-2934','P11@email.com','216 Baker St.','05-Oct-16'),
+('P12','D9','Patient Garcia','123-6723','P12@email.com','176 Right St.','20-Jun-10'),
+('P13','D4','Patient Alicia','123-1745','P13@email.com','823 Left St.','18-May-15'),
+('P14','D4','Patient Dan','123-6565','P14@email.com','534 High St.','15-Mar-18');
+
+SELECT * FROM Patient;
+
+INSERT into Appointment values 
+('A1','P1','D2','07-Jan-19','80','65','Dream to success'),
+('A2','P13','D4','01-Apr-19','77','88','Good heart rate'),
+('A3','P11','D9','22-Mar-19','82','95','Many spots'),
+('A4','P7','D4','02-Jan-20','85','74','Fast heart rate'),
+('A5','P9','D5','13-Apr-19','75','56','Reports checked'),
+('A6','P3','D6','11-Dec-19','81','96','Sun light spots'),
+('A7','P10','D7','29-Jan-20','80','87','Early treatment'),
+('A8','P9','D5','08-Dec-19','65','92','Much better'),
+('A9','P14','D4','18-May-19','75','75','Good heart rate'),
+('A10','P8','D3','18-Nov-19','76','79','New teeth'),
+('A11','P11','D9','22-Jun-19','78','71','Much better'),
+('A12','P2','D7','21-Feb-20','82','86','Early treatment'),
+('A13','P4','D2','17-Aug-19','81','101','Bad dreams'),
+('A14','P6','D6','27-Jun-19','79','49','Sun light spots'),
+('A15','P10','D7','29-Jul-20','80','83','Early treatment'),
+('A16','P7','D4','08-Jan-20','78','79','Good heart rate');
+
+SELECT * FROM Appointment;
+
+INSERT into Allergy values 
+('AL1','Drug'),
+('AL2','Food'),
+('AL3','Skin'),
+('AL4','Asthma'),
+('AL5','Rhinitis');
+
+SELECT * FROM Allergy;
+
+INSERT into PatientAllergy values
+('AL4','P1'),
+('AL2','P13'),
+('AL3','P11'),
+('AL4','P7'),
+('AL5','P9'),
+('AL1','P3');
+
+SELECT * FROM PatientAllergy;
+
+INSERT into Medicine values
+('M1','Ativan'),
+('M2','Ibuprofen'),
+('M3','Omeprazole'),
+('M4','Metoprolol'),
+('M5','Azithromycin'),
+('M6','Codeine');
+
+SELECT * FROM Medicine;
+
+INSERT into PatientMedicine values
+('A15','M1'),
+('A2','M6'),
+('A8','M3'),
+('A6','M3'),
+('A15','M2'),
+('A10','M6'),
+('A10','M2'),
+('A4','M5'),
+('A3','M5'),
+('A1','M2');
+
+SELECT * FROM PatientMedicine;
