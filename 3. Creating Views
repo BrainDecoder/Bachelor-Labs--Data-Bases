@@ -1,0 +1,60 @@
+   CREATE TABLE Student (
+Student_ID char (4) NOT NULL PRIMARY KEY, 
+--char is used and not integer, otherwise SQL transforms 0000 into 0
+Student_Name char (30) NOT NULL Unique,
+Department_Name char (30) NOT NULL
+);
+
+   CREATE TABLE Student_Courses (
+Student_ID char,
+Course_ID char (9) NOT NULL,
+Section integer (2) NOT NULL,
+Year integer (4) NOT NULL,
+Grade char (1) NOT NULL,
+foreign key (Student_ID)
+references Student
+);
+
+INSERT into Student values ('0000', 'AAAAA', 'Computer Science');
+INSERT into Student values ('1111', 'BBBBB', 'Computer Science');
+INSERT into Student values ('2222', 'CCCCC', 'Business Administration');
+INSERT into Student values ('3333', 'DDDDD', 'Education');
+INSERT into Student values ('4444', 'EEEEE', 'Physics');
+INSERT into Student values ('5555', 'FFFFF', 'History');
+
+INSERT into Student_Courses values ('0000', 'CS 2203', 2, 2020, 'A');
+INSERT into Student_Courses values ('0000', 'CS 1101', 1, 2019, 'A');
+INSERT into Student_Courses values ('1111', 'CS 1101', 5, 2019, 'B');
+INSERT into Student_Courses values ('1111', 'CS 1102', 1, 2019, 'B');
+INSERT into Student_Courses values ('1111', 'CS 2204', 1, 2020,'A');
+INSERT into Student_Courses values ('1111', 'CS 2401', 1, 2020, 'A');
+INSERT into Student_Courses values ('2222', 'BUS 1101', 3, 2019, 'C');
+INSERT into Student_Courses values ('2222', 'BUS 2201', 1, 2020, 'B');
+INSERT into Student_Courses values ('2222', 'BUS 3302', 1, 2020, 'B');
+INSERT into Student_Courses values ('3333', 'EDUC 5010', 1, 2019, 'A');
+INSERT into Student_Courses values ('3333', 'EDUC 5210', 1, 2020, 'B');
+INSERT into Student_Courses values ('4444', 'PHY 1101', 4, 2019, 'A');
+INSERT into Student_Courses values ('4444', 'PHY 2202', 1, 2020, 'C');
+INSERT into Student_Courses values ('4444', 'PHY 3304', 1, 2020, 'A');
+
+SELECT * FROM Student;
+SELECT * FROM Student_Courses;
+DROP Table Student;
+DROP Table Student_Courses;
+
+
+CREATE View ComputerScience
+AS Select *
+FROM Student_Courses
+Where Course_ID = "CS 2203" OR Course_ID = "CS 1101" OR Course_ID = "CS 1102" OR Course_ID = "CS 2204" OR Course_ID = "CS 2401";
+
+CREATE view BestStudents
+as select *
+from Student_Courses
+where Grade = 'A';
+
+UPDATE ComputerScience 
+Set Grade = 'B'
+Where Student_ID = '1111' and Course_ID = 'CS 2401';
+
+DROP view BestStudents;
