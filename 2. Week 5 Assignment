@@ -1,0 +1,140 @@
+CREATE TABLE Doctor (
+DoctorID integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+Name char(30) NOT NULL,
+Phone decimal(7) NOT NULL,
+SpecialtyNumber integer(2) NOT NULL,
+Supervisor char(30) NOT NULL,
+foreign key (SpecialtyNumber)
+references Specialty
+);
+
+CREATE TABLE Specialty (
+SpecialtyNumber integer(2) NOT NULL PRIMARY KEY AUTOINCREMENT,
+SpecialtyName char (30) NOT NULL Unique
+);
+
+CREATE TABLE Patient (
+PatientID integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+Name char (30) NOT NULL,
+Phone decimal(7) NOT NULL,
+Email char(30),
+Address char(40) NOT NULL,
+AddedDate date NOT NULL,
+DoctorID integer, 
+foreign key (DoctorID)
+references Doctor
+);
+
+CREATE TABLE PatientAllergy (
+AllergyID integer,
+PatientID integer,
+foreign key (AllergyID)
+references Allergy,
+foreign key (PatientID)
+references Patient
+);
+
+CREATE TABLE Allergy (
+AllergyID integer(3) NOT NULL PRIMARY KEY AUTOINCREMENT,
+AllergyName char (30) NOT NULL Unique
+);
+
+CREATE TABLE Appointment (
+AppointmentID integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+DoctorID integer, 
+PatientID integer,
+AppointmentDate date NOT NULL,
+BloodPressure integer(3) NOT NULL,
+Weight integer(3) NOT NULL,
+TreatmentNotes vchar NOT NULL,
+foreign key (DoctorID)
+references Doctor,
+foreign key (PatientID)
+references Patient
+);
+
+CREATE TABLE PatientMedicine (
+AppointmentID integer,
+MedicineID integer,
+foreign key (AppointmentID)
+references Appointment,
+foreign key (MedicineID)
+references Medicine
+);
+
+CREATE TABLE Medicine (
+MedicineID integer(4) NOT NULL PRIMARY KEY AUTOINCREMENT,
+MedicineName char (30) NOT NULL Unique
+);
+
+
+
+
+CREATE TABLE Sale (
+SaleID integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+SaleDate date NOT NULL,
+Tax decimal(2,2) NOT NULL,
+Total decimal NOT NULL
+);
+
+CREATE TABLE Item (
+ItemID integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+Name char (30) NOT NULL Unique,
+Cost decimal(2,2) NOT NULL,
+Price decimal(2,2) NOT NULL
+);
+
+CREATE TABLE Sale_Item (
+SaleID integer,
+SaleItemID integer,
+foreign key (SaleID)
+references Sale,
+foreign key (SaleItemID)
+references Item
+);
+
+SELECT * FROM Sale;
+SELECT * FROM Item;
+SELECT * FROM Sale_Item;
+
+INSERT into Sale (SaleDate, Tax, Total)
+values ('01-SEP-20', 12, 120);
+INSERT into Sale (SaleDate, Tax, Total)
+values ('03-SEP-20', 13, 140);
+INSERT into Sale (SaleDate, Tax, Total)
+values ('05-SEP-20', 9, 110);
+INSERT into Sale (SaleDate, Tax, Total)
+values ('07-SEP-20', 15, 90);
+INSERT into Sale (SaleDate, Tax, Total)
+values ('09-SEP-20', 10, 80);
+INSERT into Sale (SaleDate, Tax, Total)
+values ('11-SEP-20', 8, 160);
+
+INSERT into Item (Name, Cost, Price)
+values ('Chair', 110, 120);
+INSERT into Item (Name, Cost, Price)
+values ('Table', 120, 140);
+INSERT into Item (Name, Cost, Price)
+values ('Sofa', 100, 110);
+INSERT into Item (Name, Cost, Price)
+values ('TV', 80, 90);
+INSERT into Item (Name, Cost, Price)
+values ('Bed', 60, 80);
+INSERT into Item (Name, Cost, Price)
+values ('Door', 140, 160);
+
+INSERT into Sale_Item values (1, 2);
+INSERT into Sale_Item values (1, 3);
+INSERT into Sale_Item values (3, 5);
+
+UPDATE Item 
+SET Price = 220
+WHERE ItemID = 1;
+
+create table SALE2 (
+    SaleID char(10) not null,
+    SaleDate date not null,
+    Tax decimal(10,2) not null,
+    Total decimal(10,2) not null,
+    constraint sl_pk primary key (SaleID),
+    constraint sl_uq unique (SaleID));
